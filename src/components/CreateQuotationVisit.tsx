@@ -59,7 +59,10 @@ const CreateQuotationVisitView = () => {
             QuotationService.updateQuotationVisit(
                 quotationVisit.id,
                 quotationVisit,
-                (_) => setSuccessMessage('The quotation visit has been updated successfully!'),
+                (_) => {
+                    setSuccessMessage('The quotation visit has been updated successfully!');
+                    setError({});
+                },
                 (error) => {
                     if (error.response.status === 400) {
                         setError(error.response.data);
@@ -71,7 +74,10 @@ const CreateQuotationVisitView = () => {
         } else {
             QuotationService.createQuotationVisit(
                 quotationVisit,
-                (_) => setSuccessMessage('The quotation visit has been created. It will be reviewed soon!'),
+                (_) => {
+                    setSuccessMessage('The quotation visit has been created. It will be reviewed soon!');
+                    setError({});
+                },
                 (error) => {
                     if (error.response.status === 400) {
                         setError(error.response.data);

@@ -27,11 +27,32 @@ export class QuotationVisit {
     }
 }
 
-type OnSuccess = (response: QuotationVisit) => void;
+export class QuotationItem {
+    id?: number;
+    name: string;
+    year: number;
+    manufacturer: string;
+    country: string;
+    description: string;
+    quotation_visit?: number;
+    created_at?: Date;
+
+    constructor(name: string, year: number, manufacturer: string, country: string, description: string) {
+        this.name = name;
+        this.description = description;
+        this.year = year;
+        this.manufacturer = manufacturer;
+        this.country = country;
+    }
+}
+
+type OnQuotationVisitSuccess = (response: QuotationVisit) => void;
+
+type OnQuotationItemSuccess = (response: QuotationItem) => void;
 
 type OnError = (error: any) => void;
 
-const getQuotationVisit = (id: string, onSuccess: OnSuccess, onError: OnError): void => {
+const getQuotationVisit = (id: string, onSuccess: OnQuotationVisitSuccess, onError: OnError): void => {
     axios.get<QuotationVisit>(
         `${API_URL}/api/quotation_visits/${id}`,
         { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
@@ -40,7 +61,7 @@ const getQuotationVisit = (id: string, onSuccess: OnSuccess, onError: OnError): 
         .catch(error => onError(error))
 }
 
-const createQuotationVisit = (quotationVisit: QuotationVisit, onSuccess: OnSuccess, onError: OnError): void => {
+const createQuotationVisit = (quotationVisit: QuotationVisit, onSuccess: OnQuotationVisitSuccess, onError: OnError): void => {
     axios.post<QuotationVisit>(
         `${API_URL}/api/quotation_visits/`,
         quotationVisit,
@@ -50,10 +71,39 @@ const createQuotationVisit = (quotationVisit: QuotationVisit, onSuccess: OnSucce
         .catch(error => onError(error))
 };
 
-const updateQuotationVisit = (id: number, quotationVisit: QuotationVisit, onSuccess: OnSuccess, onError: OnError): void => {
+const updateQuotationVisit = (id: number, quotationVisit: QuotationVisit, onSuccess: OnQuotationVisitSuccess, onError: OnError): void => {
     axios.put<QuotationVisit>(
         `${API_URL}/api/quotation_visits/${id}`,
         quotationVisit,
+        { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
+    )
+        .then(response => onSuccess(response.data))
+        .catch(error => onError(error))
+};
+
+const getQuotationItem = (quotationVisitId: number, quotationItemId: number, onSuccess: OnQuotationItemSuccess, onError: OnError): void => {
+    axios.get<QuotationItem>(
+        `${API_URL}/api/quotation_visits/${quotationVisitId}/items/${quotationItemId}`,
+        { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
+    )
+        .then(response => onSuccess(response.data))
+        .catch(error => onError(error))
+};
+
+const createQuotationItem = (quotationVisitId: number, quotationItem: QuotationItem, onSuccess: OnQuotationItemSuccess, onError: OnError): void => {
+    axios.post<QuotationItem>(
+        `${API_URL}/api/quotation_visits/${quotationVisitId}/items`,
+        quotationItem,
+        { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
+    )
+        .then(response => onSuccess(response.data))
+        .catch(error => onError(error))
+};
+
+const updateQuotationItem = (quotationVisitId: number, quotationItem: QuotationItem, onSuccess: OnQuotationItemSuccess, onError: OnError): void => {
+    axios.put<QuotationItem>(
+        `${API_URL}/api/quotation_visits/${quotationVisitId}/items/${quotationItem.id}`,
+        quotationItem,
         { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
     )
         .then(response => onSuccess(response.data))
@@ -64,4 +114,7 @@ export const QuotationService = {
     getQuotationVisit,
     createQuotationVisit,
     updateQuotationVisit,
+    getQuotationItem,
+    createQuotationItem,
+    updateQuotationItem,
 };

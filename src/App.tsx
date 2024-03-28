@@ -6,6 +6,7 @@ import LoginView from './components/LoginView'
 import AdminHome from './components/AdminHome'
 import UserHome from './components/UserHome'
 import CreateQuotationVisitView from './components/CreateQuotationVisit'
+import CreateQuotationItemView from './components/CreateQuotationItemView'
 
 function App() {
 
@@ -16,6 +17,8 @@ function App() {
       <Route path="/home" element={<UserHome />} />
       <Route path="/quotation-views/new" element={<CreateQuotationVisitView />} />
       <Route path="/quotation-views/edit/:id" element={<CreateQuotationVisitView />} />
+      <Route path="/quotation-views/:quotationVisitId/items/new" element={<CreateQuotationItemView />} />
+      <Route path="/quotation-views/:quotationVisitId/items/edit/:id" element={<CreateQuotationItemView />} />
     </Routes>
   </BrowserRouter>
 }
