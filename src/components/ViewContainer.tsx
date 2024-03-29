@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from "react-bootstrap";
+import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,12 +17,17 @@ const ViewContainer = ({ children }: Props) => {
     return <>
         <Navbar expand="lg" className="navbar-light bg-light justify-content-between">
             <div className="mx-3">
-                <a className="navbar-brand">Antique Store</a>
+                <Navbar.Brand>Antique Store</Navbar.Brand>
             </div>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="me-auto">
+                    <Nav.Link onClick={() => navigate('/auctions')}>Auctions</Nav.Link>
+                    <Nav.Link onClick={() => navigate('/quotation-visits')}>{localStorage.getItem('user_type') === 'Admin' ? 'Quotation Visits' : 'My Visits'}</Nav.Link>
+                </Nav>
+            </Navbar.Collapse>
             <div className="mx-3">
-                {localStorage.getItem('access_token') ?
-                    <Button className="border border-primary p-2 rounded link-underline link-underline-opacity-0" onClick={logout}>Log out</Button> :
-                    <Button className="border border-primary p-2 rounded link-underline link-underline-opacity-0" onClick={() => navigate('/login')}>Log in</Button>}
+                <Button className="border border-primary p-2 rounded link-underline link-underline-opacity-0" onClick={logout}>Log out</Button>
             </div>
         </Navbar>
         <div className="container bg-white border rounded shadow-sm mt-5 p-5">
