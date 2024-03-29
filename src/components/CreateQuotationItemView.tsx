@@ -83,7 +83,7 @@ const CreateQuotationItemView = () => {
     const handleCloseModal = () => navigate("/home");
 
     return <Container>
-        <h1 className="display-5">New quotation item for </h1>
+        <h1 className="display-5">New quotation item</h1>
         <Row>
             {Object.keys(error).length > 0 && <Alert variant='danger'>
                 <ErrorList error={error} />

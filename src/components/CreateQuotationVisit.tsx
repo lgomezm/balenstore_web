@@ -90,6 +90,7 @@ const CreateQuotationVisitView = () => {
     };
 
     const handleCloseModal = () => navigate("/home");
+    const goToConvert = () => navigate(`/quotation-views/${id}/convert`);
 
     return <Container>
         <Row>
@@ -168,6 +169,11 @@ const CreateQuotationVisitView = () => {
             </Col>
             <Col className="col-md-4"></Col>
         </Row>
+        {id && localStorage.getItem('user_type') === 'Admin' ? <Row>
+            <Col md={4}>
+                <Button variant="primary" onClick={goToConvert}>Convert to Auction</Button>
+            </Col>
+        </Row> : null}
         <Modal show={successMessage !== ''} onHide={handleCloseModal}>
             <Modal.Header closeButton>
                 <Modal.Title>Success!</Modal.Title>

@@ -7,6 +7,7 @@ import AdminHome from './components/AdminHome'
 import UserHome from './components/UserHome'
 import CreateQuotationVisitView from './components/CreateQuotationVisit'
 import CreateQuotationItemView from './components/CreateQuotationItemView'
+import ConvertToAuctionView from './components/ConvertToAuctionView'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
       <Route path="/quotation-views/edit/:id" element={<CreateQuotationVisitView />} />
       <Route path="/quotation-views/:quotationVisitId/items/new" element={<CreateQuotationItemView />} />
       <Route path="/quotation-views/:quotationVisitId/items/edit/:id" element={<CreateQuotationItemView />} />
+      <Route path="/quotation-views/:id/convert" element={<ConvertToAuctionView />} />
     </Routes>
   </BrowserRouter>
 }
