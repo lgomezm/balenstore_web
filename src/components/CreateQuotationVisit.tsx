@@ -29,6 +29,7 @@ const CreateQuotationVisitView = () => {
         QuotationService.getQuotationVisit(
             id,
             (quotation) => {
+                setScheduledAt(new Date(quotation.scheduled_at));
                 setName(quotation.name);
                 setAddress1(quotation.address_1);
                 setAddress2(quotation.address_2);

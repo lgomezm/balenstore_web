@@ -50,6 +50,8 @@ type OnQuotationVisitSuccess = (response: QuotationVisit) => void;
 
 type OnQuotationItemSuccess = (response: QuotationItem) => void;
 
+type OnQuotationVisitListSuccess = (response: QuotationVisit[]) => void;
+
 type OnQuotationItemListSuccess = (response: QuotationItem[]) => void;
 
 type OnError = (error: any) => void;
@@ -82,6 +84,15 @@ const updateQuotationVisit = (id: number, quotationVisit: QuotationVisit, onSucc
         .then(response => onSuccess(response.data))
         .catch(error => onError(error))
 };
+
+const listQuotationVisits = (onSuccess: OnQuotationVisitListSuccess, onError: OnError): void => {
+    axios.get<QuotationVisit[]>(
+        `${API_URL}/api/quotation_visits/`,
+        { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
+    )
+        .then(response => onSuccess(response.data))
+        .catch(error => onError(error))
+}
 
 const getQuotationItem = (quotationVisitId: number, quotationItemId: number, onSuccess: OnQuotationItemSuccess, onError: OnError): void => {
     axios.get<QuotationItem>(
@@ -125,6 +136,7 @@ export const QuotationService = {
     getQuotationVisit,
     createQuotationVisit,
     updateQuotationVisit,
+    listQuotationVisits,
     getQuotationItem,
     createQuotationItem,
     updateQuotationItem,
