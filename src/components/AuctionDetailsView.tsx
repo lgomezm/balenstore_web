@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Auction, AuctionService, Bid } from "../services/AuctionService";
+import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
@@ -9,7 +10,6 @@ import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import toStringDate from "../utils/DateUtils";
 import { useParams } from "react-router-dom";
-import { Alert } from "react-bootstrap";
 import ErrorList from "./ErrorList";
 import ViewContainer from "./ViewContainer";
 
