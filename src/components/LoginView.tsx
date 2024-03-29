@@ -12,6 +12,12 @@ const LoginView = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
+    const onPasswordKeyDown = (key: string) => {
+        if (key === "Enter") {
+            onLoginClicked();
+        }
+    };
+
     const onLoginClicked = () => {
         setErrorMessage('');
         if (!email || !password) {
@@ -48,7 +54,7 @@ const LoginView = () => {
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="name@example.com" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <Form.Control type="password" placeholder="name@example.com" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => onPasswordKeyDown(e.key)} />
         </Form.Group>
         <Button onClick={onLoginClicked}>Log In</Button>
     </Container>;

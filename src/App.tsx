@@ -10,6 +10,7 @@ import CreateQuotationItemView from './components/CreateQuotationItemView'
 import ConvertToAuctionView from './components/ConvertToAuctionView'
 import ListQuotationVisitsView from './components/ListQuotationVisitsView'
 import ListQuotationItemsView from './components/ListQuotationItemsView'
+import ListAuctionsView from './components/ListAuctionsView'
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
       <Route path="/quotation-views/:quotationVisitId/items/new" element={<CreateQuotationItemView />} />
       <Route path="/quotation-views/:quotationVisitId/items/edit/:id" element={<CreateQuotationItemView />} />
       <Route path="/quotation-views/:id/convert" element={<ConvertToAuctionView />} />
+      <Route path="/auctions" element={<ListAuctionsView />} />
     </Routes>
   </BrowserRouter>
 }
