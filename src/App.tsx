@@ -20,13 +20,13 @@ function App() {
       <Route path="/login" element={<LoginView />} />
       <Route path="/admin" element={<AdminHome />} />
       <Route path="/home" element={<UserHome />} />
-      <Route path="/quotation-views" element={<ListQuotationVisitsView />} />
-      <Route path="/quotation-views/new" element={<CreateQuotationVisitView />} />
-      <Route path="/quotation-views/edit/:id" element={<CreateQuotationVisitView />} />
-      <Route path="/quotation-views/:quotationVisitId/items" element={<ListQuotationItemsView />} />
-      <Route path="/quotation-views/:quotationVisitId/items/new" element={<CreateQuotationItemView />} />
-      <Route path="/quotation-views/:quotationVisitId/items/edit/:id" element={<CreateQuotationItemView />} />
-      <Route path="/quotation-views/:id/convert" element={<ConvertToAuctionView />} />
+      <Route path="/quotation-visits" element={<ListQuotationVisitsView />} />
+      <Route path="/quotation-visits/new" element={<CreateQuotationVisitView />} />
+      <Route path="/quotation-visits/edit/:id" element={<CreateQuotationVisitView />} />
+      <Route path="/quotation-visits/:quotationVisitId/items" element={<ListQuotationItemsView />} />
+      <Route path="/quotation-visits/:quotationVisitId/items/new" element={<CreateQuotationItemView />} />
+      <Route path="/quotation-visits/:quotationVisitId/items/edit/:id" element={<CreateQuotationItemView />} />
+      <Route path="/quotation-visits/:id/convert" element={<ConvertToAuctionView />} />
       <Route path="/auctions" element={<ListAuctionsView />} />
       <Route path="/auctions/:id" element={<AuctionDetailsView />} />
     </Routes>

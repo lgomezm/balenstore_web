@@ -3,6 +3,7 @@ import { Alert, Button, Col, Container, Form, Modal, Row } from "react-bootstrap
 import { QuotationService, QuotationItem } from "../services/QuotationService";
 import ErrorList from "./ErrorList";
 import { useNavigate, useParams } from "react-router-dom";
+import ViewContainer from "./ViewContainer";
 
 const CreateQuotationItemView = () => {
     const [name, setName] = useState('');
@@ -82,66 +83,68 @@ const CreateQuotationItemView = () => {
 
     const handleCloseModal = () => navigate("/home");
 
-    return <Container>
-        <h1 className="display-5">New quotation item</h1>
-        <Row>
-            {Object.keys(error).length > 0 && <Alert variant='danger'>
-                <ErrorList error={error} />
-            </Alert>}
+    return <ViewContainer>
+        <Container>
+            <h1 className="display-5">New quotation item</h1>
+            <Row>
+                {Object.keys(error).length > 0 && <Alert variant='danger'>
+                    <ErrorList error={error} />
+                </Alert>}
 
-            <Col sm={12} md={3}>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} />
-                </Form.Group>
-            </Col>
+                <Col sm={12} md={3}>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                    </Form.Group>
+                </Col>
 
-            <Col sm={12} md={3}>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Year</Form.Label>
-                    <Form.Control type="number" value={year} onChange={(e) => handleYearChange(e.target.value)} />
-                </Form.Group>
-            </Col>
+                <Col sm={12} md={3}>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Year</Form.Label>
+                        <Form.Control type="number" value={year} onChange={(e) => handleYearChange(e.target.value)} />
+                    </Form.Group>
+                </Col>
 
-            <Col sm={12} md={3}>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Manufacturer</Form.Label>
-                    <Form.Control type="text" value={manufacturer} onChange={(e) => setManufacturer(e.target.value)} />
-                </Form.Group>
-            </Col>
+                <Col sm={12} md={3}>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Manufacturer</Form.Label>
+                        <Form.Control type="text" value={manufacturer} onChange={(e) => setManufacturer(e.target.value)} />
+                    </Form.Group>
+                </Col>
 
-            <Col sm={12} md={3}>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Country</Form.Label>
-                    <Form.Control type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
-                </Form.Group>
-            </Col>
+                <Col sm={12} md={3}>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Country</Form.Label>
+                        <Form.Control type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
+                    </Form.Group>
+                </Col>
 
-            <Col sm={12} md={12}>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control as="textarea" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
-                </Form.Group>
-            </Col>
+                <Col sm={12} md={12}>
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control as="textarea" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
+                    </Form.Group>
+                </Col>
 
-            <Col md={4} />
-            <Col md={4} className="align-items-center text-center mt-4">
-                <Button variant='primary' onClick={onSubmit}>Submit</Button>
-            </Col>
-            <Col md={4} />
-        </Row>
-        <Modal show={successMessage !== ''} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Success!</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{successMessage}</Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" onClick={handleCloseModal}>
-                    Close
-                </Button>
-            </Modal.Footer>
-        </Modal>
-    </Container>;
+                <Col md={4} />
+                <Col md={4} className="align-items-center text-center mt-4">
+                    <Button variant='primary' onClick={onSubmit}>Submit</Button>
+                </Col>
+                <Col md={4} />
+            </Row>
+            <Modal show={successMessage !== ''} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Success!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{successMessage}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={handleCloseModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </Container>
+    </ViewContainer>;
 };
 
 export default CreateQuotationItemView;

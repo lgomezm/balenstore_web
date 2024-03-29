@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import { AuthService } from '../services/AuthService';
 import { useNavigate } from 'react-router-dom';
+import { Col, Row } from 'react-bootstrap';
 
 const LoginView = () => {
     const [email, setEmail] = useState('');
@@ -31,9 +32,9 @@ const LoginView = () => {
                 localStorage.setItem('refresh', response.refresh);
                 localStorage.setItem('user_type', response.user_type);
                 if (response.user_type === 'Admin') {
-                    navigate("/admin");
+                    navigate("/quotation-visits");
                 } else {
-                    navigate("/home");
+                    navigate("/auctions");
                 }
             },
             (error) => {
@@ -47,16 +48,27 @@ const LoginView = () => {
     }
 
     return <Container>
-        {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="name@example.com" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => onPasswordKeyDown(e.key)} />
-        </Form.Group>
-        <Button onClick={onLoginClicked}>Log In</Button>
+        <Row className='mt-3 align-items-center justify-content-center'>
+            <Col mr={4}></Col>
+            <Col mr={4} className='bg-white border rounded shadow-sm mt-5 p-5'>
+                <h1> Log in</h1>
+                {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onKeyDown={(e) => onPasswordKeyDown(e.key)} />
+                </Form.Group>
+                <Button onClick={onLoginClicked}>Log In</Button>
+            </Col>
+            <Col mr={4}></Col>
+        </Row>
     </Container>;
 }
 

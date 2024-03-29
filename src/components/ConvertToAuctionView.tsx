@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import { AuctionService, ItemToAuction } from "../services/AuctionService";
 import ErrorList from "./ErrorList";
+import ViewContainer from "./ViewContainer";
 
 const ConvertToAuctionView = () => {
     const [items, setItems] = useState<QuotationItem[]>([]);
@@ -58,44 +59,46 @@ const ConvertToAuctionView = () => {
 
     const handleCloseModal = () => navigate("/admin");
 
-    return <Container>
-        <h1 className="display-5">Creating new auctions</h1>
-        {Object.keys(error).length > 0 && <Alert variant='danger'>
-            <ErrorList error={error} />
-        </Alert>}
-        <Row>
-            <Col md={4}><h3>Item</h3></Col>
-            <Col md={4}><h3>Starting Bid</h3></Col>
-            <Col md={4}><h3>Closes At</h3></Col>
-        </Row>
-        {itemsToAuctions.map((item, index) => <Row key={item.item_id}>
-            <Col><Form.Control type="text" value={items[index].name} readOnly={true} /></Col>
-            <Col>
-                <Form.Control type="number" value={item.starting_bid} onChange={(e) => updateItemStartingBid(index, e.target.value)} />
-            </Col>
-            <Col>
-                <Form.Control type="date" value={item.closes_at.toISOString().split('T')[0]} onChange={(e) => updateItemClosesAt(index, new Date(e.target.value))} />
-            </Col>
-        </Row>)}
-        <Row className="mt-3">
-            <Col md={4} />
-            <Col md={4}>
-                <Button variant="primary" onClick={convert}>Create Auctions</Button>
-            </Col>
-            <Col md={4} />
-        </Row>
-        <Modal show={successMessage !== ''} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Success!</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{successMessage}</Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" onClick={handleCloseModal}>
-                    Close
-                </Button>
-            </Modal.Footer>
-        </Modal>
-    </Container>;
+    return <ViewContainer>
+        <Container>
+            <h1 className="display-5">Creating new auctions</h1>
+            {Object.keys(error).length > 0 && <Alert variant='danger'>
+                <ErrorList error={error} />
+            </Alert>}
+            <Row>
+                <Col md={4}><h3>Item</h3></Col>
+                <Col md={4}><h3>Starting Bid</h3></Col>
+                <Col md={4}><h3>Closes At</h3></Col>
+            </Row>
+            {itemsToAuctions.map((item, index) => <Row key={item.item_id}>
+                <Col><Form.Control type="text" value={items[index].name} readOnly={true} /></Col>
+                <Col>
+                    <Form.Control type="number" value={item.starting_bid} onChange={(e) => updateItemStartingBid(index, e.target.value)} />
+                </Col>
+                <Col>
+                    <Form.Control type="date" value={item.closes_at.toISOString().split('T')[0]} onChange={(e) => updateItemClosesAt(index, new Date(e.target.value))} />
+                </Col>
+            </Row>)}
+            <Row className="mt-3">
+                <Col md={4} />
+                <Col md={4}>
+                    <Button variant="primary" onClick={convert}>Create Auctions</Button>
+                </Col>
+                <Col md={4} />
+            </Row>
+            <Modal show={successMessage !== ''} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Success!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{successMessage}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={handleCloseModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </Container>
+    </ViewContainer>;
 };
 
 export default ConvertToAuctionView;

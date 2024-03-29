@@ -4,6 +4,7 @@ import { US_STATES } from "../utils/UsStates";
 import { QuotationVisit, QuotationService } from "../services/QuotationService";
 import { useNavigate, useParams } from "react-router-dom";
 import ErrorList from "./ErrorList";
+import ViewContainer from "./ViewContainer";
 
 const CreateQuotationVisitView = () => {
     const [scheduledAt, setScheduledAt] = useState(new Date());
@@ -91,102 +92,104 @@ const CreateQuotationVisitView = () => {
     };
 
     const handleCloseModal = () => navigate("/home");
-    const goToConvert = () => navigate(`/quotation-views/${id}/convert`);
+    const goToConvert = () => navigate(`/quotation-visits/${id}/convert`);
 
-    return <Container>
-        <Row>
-            {Object.keys(error).length > 0 && <Alert variant='danger'>
-                <ErrorList error={error} />
-            </Alert>}
-            <Col className="col-md-3">
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Scheduled at</Form.Label>
-                    <Form.Control type="date" value={scheduledAt.toISOString().split('T')[0]} onChange={(e) => setScheduledAt(new Date(e.target.value))} />
-                </Form.Group>
-            </Col>
+    return <ViewContainer>
+        <Container>
+            <Row>
+                {Object.keys(error).length > 0 && <Alert variant='danger'>
+                    <ErrorList error={error} />
+                </Alert>}
+                <Col className="col-md-3">
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Scheduled at</Form.Label>
+                        <Form.Control type="date" value={scheduledAt.toISOString().split('T')[0]} onChange={(e) => setScheduledAt(new Date(e.target.value))} />
+                    </Form.Group>
+                </Col>
 
-            <Col className="col-md-9">
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Name of this visit" value={name} onChange={(e) => setName(e.target.value)} />
-                </Form.Group>
-            </Col>
+                <Col className="col-md-9">
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" placeholder="Name of this visit" value={name} onChange={(e) => setName(e.target.value)} />
+                    </Form.Group>
+                </Col>
 
-            <Col className="col-md-6">
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Address 1</Form.Label>
-                    <Form.Control type="text" placeholder="Address line 1" value={address1} onChange={(e) => setAddress1(e.target.value)} />
-                </Form.Group>
-            </Col>
+                <Col className="col-md-6">
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Address 1</Form.Label>
+                        <Form.Control type="text" placeholder="Address line 1" value={address1} onChange={(e) => setAddress1(e.target.value)} />
+                    </Form.Group>
+                </Col>
 
-            <Col className="col-md-6">
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Address 2</Form.Label>
-                    <Form.Control type="text" placeholder="Address line 2" value={address2} onChange={(e) => setAddress2(e.target.value)} />
-                </Form.Group>
-            </Col>
+                <Col className="col-md-6">
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Address 2</Form.Label>
+                        <Form.Control type="text" placeholder="Address line 2" value={address2} onChange={(e) => setAddress2(e.target.value)} />
+                    </Form.Group>
+                </Col>
 
-            <Col className="col-md-4">
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>City</Form.Label>
-                    <Form.Control type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
-                </Form.Group>
-            </Col>
+                <Col className="col-md-4">
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>City</Form.Label>
+                        <Form.Control type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
+                    </Form.Group>
+                </Col>
 
-            <Col className="col-md-4">
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>State</Form.Label>
-                    <Form.Select value={state} onChange={(e) => setState(e.target.value)}>
-                        {Object.keys(US_STATES).map(abbreviation => <option key={abbreviation} value={abbreviation}>{US_STATES[abbreviation]}</option>)}
-                    </Form.Select>
-                </Form.Group>
-            </Col>
+                <Col className="col-md-4">
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>State</Form.Label>
+                        <Form.Select value={state} onChange={(e) => setState(e.target.value)}>
+                            {Object.keys(US_STATES).map(abbreviation => <option key={abbreviation} value={abbreviation}>{US_STATES[abbreviation]}</option>)}
+                        </Form.Select>
+                    </Form.Group>
+                </Col>
 
-            <Col className="col-md-4">
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Zip</Form.Label>
-                    <Form.Control type="number" placeholder="ZIP code" value={zip} onChange={(e) => setZip(e.target.value)} />
-                </Form.Group>
-            </Col>
+                <Col className="col-md-4">
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Zip</Form.Label>
+                        <Form.Control type="number" placeholder="ZIP code" value={zip} onChange={(e) => setZip(e.target.value)} />
+                    </Form.Group>
+                </Col>
 
-            {localStorage.getItem('user_type') === 'Admin' ? <Col className="col-md-3">
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                    <Form.Label>Status</Form.Label>
-                    <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                        <option>Open this select menu</option>
-                        <option value="pending">Pending</option>
-                        <option value="confirmed">Confirmed</option>
-                        <option value="approved">Approved</option>
-                        <option value="rejected">Rejected</option>
-                    </Form.Select>
-                </Form.Group>
-            </Col> : null}
+                {localStorage.getItem('user_type') === 'Admin' ? <Col className="col-md-3">
+                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                        <Form.Label>Status</Form.Label>
+                        <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}>
+                            <option>Open this select menu</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                        </Form.Select>
+                    </Form.Group>
+                </Col> : null}
 
-            {localStorage.getItem('user_type') === 'Admin' ? <Col className="col-md-9"></Col> : null}
+                {localStorage.getItem('user_type') === 'Admin' ? <Col className="col-md-9"></Col> : null}
 
-            <Col className="col-md-4"></Col>
-            <Col className="col-md-4">
-                <Button variant='primary' onClick={onSubmit}>Submit</Button>
-            </Col>
-            <Col className="col-md-4"></Col>
-        </Row>
-        {id && localStorage.getItem('user_type') === 'Admin' ? <Row>
-            <Col md={4}>
-                <Button variant="primary" onClick={goToConvert}>Convert to Auction</Button>
-            </Col>
-        </Row> : null}
-        <Modal show={successMessage !== ''} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Success!</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{successMessage}</Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" onClick={handleCloseModal}>
-                    Close
-                </Button>
-            </Modal.Footer>
-        </Modal>
-    </Container>;
+                <Col className="col-md-4"></Col>
+                <Col className="col-md-4">
+                    <Button variant='primary' onClick={onSubmit}>Submit</Button>
+                </Col>
+                <Col className="col-md-4"></Col>
+            </Row>
+            {id && localStorage.getItem('user_type') === 'Admin' ? <Row>
+                <Col md={4}>
+                    <Button variant="primary" onClick={goToConvert}>Convert to Auction</Button>
+                </Col>
+            </Row> : null}
+            <Modal show={successMessage !== ''} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Success!</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>{successMessage}</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={handleCloseModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </Container>
+    </ViewContainer>;
 };
 
 export default CreateQuotationVisitView;
