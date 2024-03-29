@@ -1,21 +1,36 @@
 import { useEffect, useState } from "react";
 import { QuotationService, QuotationVisit } from "../services/QuotationService";
-import { Button } from "react-bootstrap";
+import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 import ViewContainer from "./ViewContainer";
 
 const ListQuotationVisitView = () => {
     const [quotationVisits, setQuotationVisits] = useState<QuotationVisit[]>([]);
+    const [isError, setIsError] = useState(false);
 
     const navigate = useNavigate();
 
     useEffect(() => QuotationService.listQuotationVisits(
         (quotationVisits) => setQuotationVisits(quotationVisits),
-        (error) => console.log(error)
+        (_) => setIsError(true)
     ), []);
 
     return <ViewContainer>
-        <h1>Quotation visits</h1>
+        {isError && <Alert variant='danger'>Could not get quotation visits. Please try again later.</Alert>}
+        <Container>
+            <Row>
+                <Col md={10}>
+                    <h1>Quotation visits</h1>
+                </Col>
+                <Col md={2}>
+                    <Button variant="primary" onClick={() => navigate('/quotation-visits/new')}>Create new</Button>
+                </Col>
+            </Row>
+        </Container>
         <table className="table table-striped mt-3">
             <thead>
                 <tr>
@@ -34,7 +49,10 @@ const ListQuotationVisitView = () => {
                     <td>{quotationVisit.address_1}</td>
                     <td>{quotationVisit.city}</td>
                     <td>{quotationVisit.state}</td>
-                    <td><Button variant="primary" onClick={() => navigate(`/quotation-visits/edit/${quotationVisit.id}`)}>Edit</Button></td>
+                    <td>
+                        <Button variant="primary" onClick={() => navigate(`/quotation-visits/edit/${quotationVisit.id}`)}>Edit</Button>&nbsp;
+                        <Button variant="primary" onClick={() => navigate(`/quotation-visits/${quotationVisit.id}/items`)}>Items</Button>
+                    </td>
                 </tr>)}
             </tbody>
         </table >

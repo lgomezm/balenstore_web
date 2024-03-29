@@ -28,7 +28,7 @@ const AuctionDetailsView = () => {
     const getBids = () => AuctionService.getBids(
         id!,
         (bids) => setBids(bids.reverse()),
-        (error) => console.log(error)
+        (_) => setError({ unknown: ['Could not get bids. Please try again later.'] })
     );
 
     const handleBidAmountChange = (value: string) => {
@@ -41,7 +41,7 @@ const AuctionDetailsView = () => {
         AuctionService.getAuction(
             id!,
             (auction) => setAuction(auction),
-            (error) => console.log(error)
+            (_) => setError({ unknown: ['Could not get auction. Please try again later.'] })
         );
         getBids();
     }, []);

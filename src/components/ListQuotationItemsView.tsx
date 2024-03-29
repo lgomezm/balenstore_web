@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { QuotationItem, QuotationService } from "../services/QuotationService";
-import { Button } from "react-bootstrap";
+import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 import { useNavigate, useParams } from "react-router-dom";
 import ViewContainer from "./ViewContainer";
 
 const ListQuotationItemsView = () => {
     const [quotationItems, setQuotationItems] = useState<QuotationItem[]>([]);
+    const [isError, setIsError] = useState(false);
 
     const navigate = useNavigate();
     const { quotationVisitId } = useParams();
@@ -13,11 +18,23 @@ const ListQuotationItemsView = () => {
     useEffect(() => QuotationService.listQuotationVisitItems(
         parseInt(quotationVisitId!),
         (quotationItems) => setQuotationItems(quotationItems),
-        (error) => console.log(error)
+        (_) => setIsError(true)
     ), []);
 
+    const isAdmin = localStorage.getItem('user_type') === 'Admin';
+
     return <ViewContainer>
-        <h1>Quotation items</h1>
+        {isError && <Alert variant='danger'>Could not get quotation items. Please try again later.</Alert>}
+        <Container>
+            <Row>
+                <Col md={isAdmin ? 12 : 10}>
+                    <h1>Quotation items</h1>
+                </Col>
+                {!isAdmin && <Col md={2}>
+                    <Button variant="primary" onClick={() => navigate(`/quotation-visits/${parseInt(quotationVisitId!)}/items/new`)}>Add item</Button>
+                </Col>}
+            </Row>
+        </Container>
         <table className="table table-striped mt-3">
             <thead>
                 <tr>

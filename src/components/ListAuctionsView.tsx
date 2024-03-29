@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Auction, AuctionService } from "../services/AuctionService";
+import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
@@ -11,16 +12,18 @@ import ViewContainer from "./ViewContainer";
 
 const ListAuctionsView = () => {
     const [auctions, setAuctions] = useState<Auction[]>([]);
+    const [isError, setIsError] = useState(false);
 
     const navigate = useNavigate();
 
     useEffect(() => AuctionService.listAuctions(
         (auctions) => setAuctions(auctions),
-        (error) => console.log(error)
+        (_) => setIsError(true)
     ), []);
 
     return <ViewContainer>
         <Container>
+            {isError && <Alert variant='danger'>Could not get auctions. Please try again later.</Alert>}
             <h1>Auctions</h1>
             <Row>
                 {auctions.map((auction) => <Col key={auction.id} sm={6} md={4}>

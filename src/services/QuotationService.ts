@@ -94,6 +94,15 @@ const listQuotationVisits = (onSuccess: OnQuotationVisitListSuccess, onError: On
         .catch(error => onError(error))
 }
 
+const deleteQuotationVisit = (id: number, onSuccess: OnQuotationVisitSuccess, onError: OnError): void => {
+    axios.delete<QuotationVisit>(
+        `${API_URL}/api/quotation_visits/${id}`,
+        { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
+    )
+        .then(response => onSuccess(response.data))
+        .catch(error => onError(error))
+}
+
 const getQuotationItem = (quotationVisitId: number, quotationItemId: number, onSuccess: OnQuotationItemSuccess, onError: OnError): void => {
     axios.get<QuotationItem>(
         `${API_URL}/api/quotation_visits/${quotationVisitId}/items/${quotationItemId}`,
@@ -132,13 +141,24 @@ const listQuotationVisitItems = (quotationVisitId: number, onSuccess: OnQuotatio
         .catch(error => onError(error))
 }
 
+const deleteQuotationItem = (quotationVisitId: string, quotationItemId: string, onSuccess: OnQuotationItemSuccess, onError: OnError): void => {
+    axios.delete<QuotationItem>(
+        `${API_URL}/api/quotation_visits/${quotationVisitId}/items/${quotationItemId}`,
+        { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
+    )
+        .then(response => onSuccess(response.data))
+        .catch(error => onError(error))
+}
+
 export const QuotationService = {
     getQuotationVisit,
     createQuotationVisit,
     updateQuotationVisit,
     listQuotationVisits,
+    deleteQuotationVisit,
     getQuotationItem,
     createQuotationItem,
     updateQuotationItem,
     listQuotationVisitItems,
+    deleteQuotationItem,
 };

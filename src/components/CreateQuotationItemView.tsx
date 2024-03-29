@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
-import { Alert, Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import { SetStateAction, useEffect, useState } from "react";
+import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Row from "react-bootstrap/Row";
 import { QuotationService, QuotationItem } from "../services/QuotationService";
 import ErrorList from "./ErrorList";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,6 +18,7 @@ const CreateQuotationItemView = () => {
     const [country, setCountry] = useState('');
     const [description, setDescription] = useState('');
 
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [error, setError] = useState({});
 
@@ -42,6 +49,14 @@ const CreateQuotationItemView = () => {
         }
     };
 
+    const handleError = (error: { response: { status: number; data: SetStateAction<{}>; }; }) => {
+        if (error.response.status === 400) {
+            setError(error.response.data);
+        } else {
+            setError({ unknown: ['Something went wrong'] });
+        }
+    }
+
     const onSubmit = () => {
         const quotationItem = new QuotationItem(name, Number(year), manufacturer, country, description);
         if (id) {
@@ -54,13 +69,7 @@ const CreateQuotationItemView = () => {
                     setSuccessMessage('The quotation item has been updated!');
                     setError({});
                 },
-                (error) => {
-                    if (error.response.status === 400) {
-                        setError(error.response.data);
-                    } else {
-                        setError({ unknown: ['Something went wrong'] });
-                    }
-                }
+                handleError,
             )
         } else {
             QuotationService.createQuotationItem(
@@ -70,18 +79,27 @@ const CreateQuotationItemView = () => {
                     setSuccessMessage('The quotation item has been created!');
                     setError({});
                 },
-                (error) => {
-                    if (error.response.status === 400) {
-                        setError(error.response.data);
-                    } else {
-                        setError({ unknown: ['Something went wrong'] });
-                    }
-                }
+                handleError,
             )
         }
     };
 
-    const handleCloseModal = () => navigate("/home");
+    const deleteQuotationItem = () => QuotationService.deleteQuotationItem(
+        quotationVisitId!, id!,
+        (_) => {
+            setSuccessMessage('The quotation item has been deleted successfully!');
+            setError({});
+        },
+        (error) => {
+            if (error.response.status === 400) {
+                setError(error.response.data);
+            } else {
+                setError({ unknown: ['Something went wrong'] });
+            }
+        }
+    );
+
+    const handleCloseModal = () => navigate(`/quotation-visits/${quotationVisitId}/items`);
 
     return <ViewContainer>
         <Container>
@@ -128,7 +146,8 @@ const CreateQuotationItemView = () => {
 
                 <Col md={4} />
                 <Col md={4} className="align-items-center text-center mt-4">
-                    <Button variant='primary' onClick={onSubmit}>Submit</Button>
+                    <Button variant='primary' onClick={onSubmit}>Submit</Button>&nbsp;
+                    {id && <Button variant="danger" onClick={() => setShowDeleteModal(true)}>Delete</Button>}
                 </Col>
                 <Col md={4} />
             </Row>
@@ -140,6 +159,20 @@ const CreateQuotationItemView = () => {
                 <Modal.Footer>
                     <Button variant="primary" onClick={handleCloseModal}>
                         Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete Quotation Visit</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete this quotation visit?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant="danger" onClick={deleteQuotationItem}>
+                        Delete
                     </Button>
                 </Modal.Footer>
             </Modal>

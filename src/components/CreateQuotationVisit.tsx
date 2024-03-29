@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
-import { Alert, Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
+import { SetStateAction, useEffect, useState } from "react";
+import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Row from "react-bootstrap/Row";
 import { US_STATES } from "../utils/UsStates";
 import { QuotationVisit, QuotationService } from "../services/QuotationService";
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,6 +23,7 @@ const CreateQuotationVisitView = () => {
     const [status, setStatus] = useState('');
     const [quotationOwner, setQuotationOwner] = useState(0);
 
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
     const [error, setError] = useState({});
 
@@ -44,6 +51,14 @@ const CreateQuotationVisitView = () => {
         );
     }, []);
 
+    const handleError = (error: { response: { status: number; data: SetStateAction<{}>; }; }) => {
+        if (error.response.status === 400) {
+            setError(error.response.data);
+        } else {
+            setError({ unknown: ['Something went wrong'] });
+        }
+    };
+
     const onSubmit = () => {
         const quotationVisit = new QuotationVisit(
             scheduledAt,
@@ -65,13 +80,7 @@ const CreateQuotationVisitView = () => {
                     setSuccessMessage('The quotation visit has been updated successfully!');
                     setError({});
                 },
-                (error) => {
-                    if (error.response.status === 400) {
-                        setError(error.response.data);
-                    } else {
-                        setError({ unknown: ['Something went wrong'] });
-                    }
-                }
+                handleError,
             )
         } else {
             QuotationService.createQuotationVisit(
@@ -80,23 +89,26 @@ const CreateQuotationVisitView = () => {
                     setSuccessMessage('The quotation visit has been created. It will be reviewed soon!');
                     setError({});
                 },
-                (error) => {
-                    if (error.response.status === 400) {
-                        setError(error.response.data);
-                    } else {
-                        setError({ unknown: ['Something went wrong'] });
-                    }
-                }
+                handleError,
             )
         }
     };
 
-    const handleCloseModal = () => navigate("/home");
-    const goToConvert = () => navigate(`/quotation-visits/${id}/convert`);
+    const handleCloseModal = () => navigate("/quotation-visits");
+
+    const deleteQuotationVisit = () => QuotationService.deleteQuotationVisit(
+        parseInt(id!),
+        (_) => {
+            setSuccessMessage('The quotation visit has been deleted successfully!');
+            setError({});
+        },
+        handleError,
+    );
 
     return <ViewContainer>
         <Container>
-            <Row>
+            <h1>Quotation Visit</h1>
+            <Row className="mt-3">
                 {Object.keys(error).length > 0 && <Alert variant='danger'>
                     <ErrorList error={error} />
                 </Alert>}
@@ -172,11 +184,19 @@ const CreateQuotationVisitView = () => {
                 </Col>
                 <Col className="col-md-4"></Col>
             </Row>
-            {id && localStorage.getItem('user_type') === 'Admin' ? <Row>
+            {id && <hr />}
+            {id && <Row className="mt-3">
+                {localStorage.getItem('user_type') === 'Admin' ?
+                    <Col md={4}>
+                        <Button variant="success" onClick={() => navigate(`/quotation-visits/${id}/convert`)}>Convert to Auction</Button>
+                    </Col> : <Col md={4} />}
                 <Col md={4}>
-                    <Button variant="primary" onClick={goToConvert}>Convert to Auction</Button>
+                    <Button variant="primary" onClick={() => navigate(`/quotation-visits/${id}/items`)}>View Items</Button>
                 </Col>
-            </Row> : null}
+                <Col md={4}>
+                    <Button variant="danger" onClick={() => setShowDeleteModal(true)}>Delete</Button>
+                </Col>
+            </Row>}
             <Modal show={successMessage !== ''} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Success!</Modal.Title>
@@ -185,6 +205,20 @@ const CreateQuotationVisitView = () => {
                 <Modal.Footer>
                     <Button variant="primary" onClick={handleCloseModal}>
                         Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Delete Quotation Visit</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete this quotation visit?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant="danger" onClick={deleteQuotationVisit}>
+                        Delete
                     </Button>
                 </Modal.Footer>
             </Modal>

@@ -22,7 +22,7 @@ const ConvertToAuctionView = () => {
             setItems(items);
             setItemsToAuctions(items.map((item) => new ItemToAuction(item.id!)))
         },
-        (error) => console.log(error)
+        (_) => setError({ unknown: ['Could not get quotation items. Please try again later'] })
     ), []);
 
     const updateItemStartingBid = (index: number, value: any) => {
