@@ -36,7 +36,26 @@ export class Auction {
     }
 }
 
+export class Bid {
+    id?: number;
+    auction: number;
+    bidder?: number;
+    amount: number;
+    created_at?: Date;
+
+    constructor(auction: number, amount: number) {
+        this.auction = auction;
+        this.amount = amount;
+    }
+}
+
 type OnAuctionListSuccess = (response: Auction[]) => void;
+
+type OnAuctionSuccess = (response: Auction) => void;
+
+type OnBidListSuccess = (response: Bid[]) => void;
+
+type OnBidSuccess = (response: Bid) => void;
 
 type OnError = (error: any) => void;
 
@@ -59,7 +78,38 @@ const listAuctions = (onSuccess: OnAuctionListSuccess, onError: OnError): void =
         .catch(error => onError(error))
 }
 
+const getAuction = (id: string, onSuccess: OnAuctionSuccess, onError: OnError): void => {
+    axios.get<Auction>(
+        `${API_URL}/api/auctions/${id}`,
+        { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
+    )
+        .then(response => onSuccess(response.data))
+        .catch(error => onError(error))
+};
+
+const getBids = (auctionId: string, onSuccess: OnBidListSuccess, onError: OnError): void => {
+    axios.get<Bid[]>(
+        `${API_URL}/api/auctions/${auctionId}/bids`,
+        { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
+    )
+        .then(response => onSuccess(response.data))
+        .catch(error => onError(error))
+}
+
+const placeBid = (auctionId: string, bid: number, onSuccess: OnBidSuccess, onError: OnError): void => {
+    axios.post<Bid>(
+        `${API_URL}/api/auctions/${auctionId}/bids`,
+        { bid },
+        { headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` } }
+    )
+        .then(response => onSuccess(response.data))
+        .catch(error => onError(error))
+};
+
 export const AuctionService = {
     convertToAuctions,
     listAuctions,
+    getAuction,
+    getBids,
+    placeBid,
 };

@@ -6,9 +6,12 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import toStringDate from "../utils/DateUtils";
+import { useNavigate } from "react-router-dom";
 
 const ListAuctionsView = () => {
     const [auctions, setAuctions] = useState<Auction[]>([]);
+
+    const navigate = useNavigate();
 
     useEffect(() => AuctionService.listAuctions(
         (auctions) => setAuctions(auctions),
@@ -26,7 +29,7 @@ const ListAuctionsView = () => {
                         <Card.Text><strong>Closes:</strong> {toStringDate(auction.closes_at)}</Card.Text>
                         <Card.Text><strong>Starting Bid:</strong> ${auction.starting_bid}</Card.Text>
                         <Card.Text><strong>Current Bid:</strong> {auction.current_bid ? `${auction.current_bid}` : '-'}</Card.Text>
-                        <Button variant="primary">View details</Button>
+                        <Button variant="primary" onClick={() => navigate(`/auctions/${auction.id}`)}>View details</Button>
                     </Card.Body>
                 </Card>
             </Col>)}
