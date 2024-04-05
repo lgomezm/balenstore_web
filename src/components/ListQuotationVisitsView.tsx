@@ -27,7 +27,7 @@ const ListQuotationVisitView = () => {
                     <h1>Quotation visits</h1>
                 </Col>
                 <Col md={2}>
-                    <Button variant="primary" onClick={() => navigate('/quotation-visits/new')}>Create new</Button>
+                    <Button data-testid='new-visit-button' variant="primary" onClick={() => navigate('/quotation-visits/new')}>Create new</Button>
                 </Col>
             </Row>
         </Container>

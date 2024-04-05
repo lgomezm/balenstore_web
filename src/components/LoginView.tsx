@@ -51,21 +51,27 @@ const LoginView = () => {
         <Row className='mt-3 align-items-center justify-content-center'>
             <Col mr={4}></Col>
             <Col mr={4} className='bg-white border rounded shadow-sm mt-5 p-5'>
-                <h1> Log in</h1>
+                <h1 data-testid='login-title'>Log in</h1>
                 {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Email address" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <Form.Control
+                        data-testid='login-email'
+                        type="email"
+                        placeholder="Email address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)} />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
+                        data-testid='login-password'
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onKeyDown={(e) => onPasswordKeyDown(e.key)} />
                 </Form.Group>
-                <Button onClick={onLoginClicked}>Log In</Button>
+                <Button data-testid='login-button' onClick={onLoginClicked}>Log In</Button>
             </Col>
             <Col mr={4}></Col>
         </Row>

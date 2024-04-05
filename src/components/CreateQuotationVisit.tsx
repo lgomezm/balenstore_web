@@ -122,14 +122,14 @@ const CreateQuotationVisitView = () => {
                 <Col className="col-md-9">
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                         <Form.Label>Name</Form.Label>
-                        <Form.Control type="text" placeholder="Name of this visit" value={name} onChange={(e) => setName(e.target.value)} />
+                        <Form.Control data-testid='visit-name' type="text" placeholder="Name of this visit" value={name} onChange={(e) => setName(e.target.value)} />
                     </Form.Group>
                 </Col>
 
                 <Col className="col-md-6">
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                         <Form.Label>Address 1</Form.Label>
-                        <Form.Control type="text" placeholder="Address line 1" value={address1} onChange={(e) => setAddress1(e.target.value)} />
+                        <Form.Control data-testid='visit-address-1' type="text" placeholder="Address line 1" value={address1} onChange={(e) => setAddress1(e.target.value)} />
                     </Form.Group>
                 </Col>
 
@@ -143,14 +143,14 @@ const CreateQuotationVisitView = () => {
                 <Col className="col-md-4">
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                         <Form.Label>City</Form.Label>
-                        <Form.Control type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
+                        <Form.Control data-testid='visit-city' type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
                     </Form.Group>
                 </Col>
 
                 <Col className="col-md-4">
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                         <Form.Label>State</Form.Label>
-                        <Form.Select value={state} onChange={(e) => setState(e.target.value)}>
+                        <Form.Select data-testid='visit-state' value={state} onChange={(e) => setState(e.target.value)}>
                             {Object.keys(US_STATES).map(abbreviation => <option key={abbreviation} value={abbreviation}>{US_STATES[abbreviation]}</option>)}
                         </Form.Select>
                     </Form.Group>
@@ -159,7 +159,7 @@ const CreateQuotationVisitView = () => {
                 <Col className="col-md-4">
                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                         <Form.Label>Zip</Form.Label>
-                        <Form.Control type="number" placeholder="ZIP code" value={zip} onChange={(e) => setZip(e.target.value)} />
+                        <Form.Control data-testid='visit-zip' type="number" placeholder="ZIP code" value={zip} onChange={(e) => setZip(e.target.value)} />
                     </Form.Group>
                 </Col>
 
@@ -180,7 +180,7 @@ const CreateQuotationVisitView = () => {
 
                 <Col className="col-md-4"></Col>
                 <Col className="col-md-4">
-                    <Button variant='primary' onClick={onSubmit}>Submit</Button>
+                    <Button variant='primary' data-testid='visit-submit-button' onClick={onSubmit}>Submit</Button>
                 </Col>
                 <Col className="col-md-4"></Col>
             </Row>
@@ -197,13 +197,13 @@ const CreateQuotationVisitView = () => {
                     <Button variant="danger" onClick={() => setShowDeleteModal(true)}>Delete</Button>
                 </Col>
             </Row>}
-            <Modal show={successMessage !== ''} onHide={handleCloseModal}>
+            <Modal data-testid='visit-success-modal' show={successMessage !== ''} onHide={handleCloseModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Success!</Modal.Title>
+                    <Modal.Title data-testid='visit-success-modal-title'>Success!</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{successMessage}</Modal.Body>
+                <Modal.Body data-testid='visit-success-modal-body'>{successMessage}</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="primary" onClick={handleCloseModal}>
+                    <Button data-testid='visit-success-modal-close-button' variant="primary" onClick={handleCloseModal}>
                         Close
                     </Button>
                 </Modal.Footer>
