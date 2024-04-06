@@ -2,3 +2,11 @@
   max-width: 100%;
   text-align: center;
 }
+
+.dropzone {
+  border: 2px dashed red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+}

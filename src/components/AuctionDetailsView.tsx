@@ -6,12 +6,14 @@ import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
+import Image from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import toStringDate from "../utils/DateUtils";
 import { useParams } from "react-router-dom";
 import ErrorList from "./ErrorList";
 import ViewContainer from "./ViewContainer";
+
 
 const AuctionDetailsView = () => {
     const [auction, setAuction] = useState<Auction | undefined>(undefined);
@@ -71,14 +73,17 @@ const AuctionDetailsView = () => {
                 <ErrorList error={error} />
             </Alert>}
             <Row>
-                {auction && <Col md={10} className="text-start">
-                    <h1>{auction.item_data!.name}</h1>
+                {auction && <Col md={6} className="text-start">
+                    <h1 className="text-center">{auction.item_data!.name}</h1>
                     <p>{auction.item_data!.description}</p>
                     <p><strong>Current Bid:</strong> {auction.current_bid ? `${auction.current_bid}` : '-'}</p>
                     <p><strong>Starting Bid:</strong> ${auction.starting_bid}</p>
                     <p><strong>Open since:</strong> {toStringDate(auction.created_at)}</p>
                     <p><strong>Closes:</strong> {toStringDate(auction.closes_at)}</p>
                     <Button variant="primary" onClick={() => setShowPlaceBidModal(true)}>Place Bid</Button>
+                </Col>}
+                {auction && <Col md={4} className="text-start">
+                    <Image src={auction.item_data!.image_url ?? 'https://d3m4dp4gwdswx.cloudfront.net/placeholder.avif'} rounded fluid />
                 </Col>}
                 <Col md={2}>
                     <h3>Bid history</h3>

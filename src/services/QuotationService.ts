@@ -24,6 +24,7 @@ export class QuotationVisit {
         this.state = state;
         this.zip = zip;
         this.status = status;
+
     }
 }
 
@@ -35,14 +36,16 @@ export class QuotationItem {
     country: string;
     description: string;
     quotation_visit?: number;
+    image_url?: string;
     created_at?: Date;
 
-    constructor(name: string, year: number, manufacturer: string, country: string, description: string) {
+    constructor(name: string, year: number, manufacturer: string, country: string, description: string, image_url?: string) {
         this.name = name;
         this.description = description;
         this.year = year;
         this.manufacturer = manufacturer;
         this.country = country;
+        this.image_url = image_url;
     }
 }
 
@@ -150,6 +153,36 @@ const deleteQuotationItem = (quotationVisitId: string, quotationItemId: string, 
         .catch(error => onError(error))
 }
 
+const uploadItemPicture = (file: File,
+    onSuccess: (url: string) => void,
+    onError: (errors: string[]) => void): void => {
+    const apiUrl = `${API_URL}/api/quotation_visits/items/upload`;
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        },
+        body: JSON.stringify({ file_name: file.name }),
+    }).then(async (response) => {
+        if (!response.ok) {
+            onError(['Could not initiate upload']);
+        } else {
+            const responseBody = await response.json();
+            const finalUrl = responseBody.final_url;
+            response = await fetch(responseBody.url, {
+                method: 'PUT',
+                body: file
+            });
+            if (!response.ok) {
+                onError(['Could not upload image']);
+            } else {
+                onSuccess(finalUrl);
+            }
+        }
+    });
+};
+
 export const QuotationService = {
     getQuotationVisit,
     createQuotationVisit,
@@ -161,4 +194,5 @@ export const QuotationService = {
     updateQuotationItem,
     listQuotationVisitItems,
     deleteQuotationItem,
+    uploadItemPicture,
 };

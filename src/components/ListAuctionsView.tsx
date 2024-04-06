@@ -28,6 +28,7 @@ const ListAuctionsView = () => {
             <Row>
                 {auctions.map((auction) => <Col key={auction.id} sm={6} md={4}>
                     <Card>
+                        <Card.Img variant="top" src={auction.item_data?.image_url ?? 'https://d3m4dp4gwdswx.cloudfront.net/placeholder.avif'} />
                         <Card.Body>
                             <Card.Title>{auction.item_data!.name}</Card.Title>
                             <Card.Text>{auction.item_data!.description}</Card.Text>

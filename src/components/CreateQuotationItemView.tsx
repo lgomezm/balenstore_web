@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useCallback, useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -10,6 +10,7 @@ import { QuotationService, QuotationItem } from "../services/QuotationService";
 import ErrorList from "./ErrorList";
 import { useNavigate, useParams } from "react-router-dom";
 import ViewContainer from "./ViewContainer";
+import { FileRejection, useDropzone } from "react-dropzone";
 
 const CreateQuotationItemView = () => {
     const [name, setName] = useState('');
@@ -17,6 +18,8 @@ const CreateQuotationItemView = () => {
     const [manufacturer, setManufacturer] = useState('');
     const [country, setCountry] = useState('');
     const [description, setDescription] = useState('');
+    const [file, setFile] = useState<File | null>(null);
+    const [existingImageUrl, setExistingImageUrl] = useState<string | undefined>(undefined);
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
@@ -38,6 +41,7 @@ const CreateQuotationItemView = () => {
                 setManufacturer(item.manufacturer);
                 setCountry(item.country);
                 setDescription(item.description);
+                setExistingImageUrl(item.image_url);
             },
             (_) => setError({ unknown: ['Something went wrong'] })
         );
@@ -55,10 +59,40 @@ const CreateQuotationItemView = () => {
         } else {
             setError({ unknown: ['Something went wrong'] });
         }
-    }
+    };
+
+    const onDrop = useCallback((accFiles: File[], _rejFiles: FileRejection[]) => {
+        if (accFiles.length > 0) {
+            setFile(accFiles[0])
+        }
+    }, []);
+
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop: onDrop,
+        accept: { 'image/*': [] },
+        maxSize: 10000 * 1024,
+    });
 
     const onSubmit = () => {
-        const quotationItem = new QuotationItem(name, Number(year), manufacturer, country, description);
+        if (file) {
+            QuotationService.uploadItemPicture(
+                file,
+                saveItem,
+                ([errors]) => setError({ unknown: [errors] }),
+            )
+        } else {
+            saveItem(undefined);
+        }
+    };
+
+    const saveItem = (uploadedImageUrl?: string) => {
+        let imageUrl: string | undefined;
+        if (uploadedImageUrl) {
+            imageUrl = uploadedImageUrl;
+        } else if (existingImageUrl) {
+            imageUrl = existingImageUrl;
+        }
+        const quotationItem = new QuotationItem(name, Number(year), manufacturer, country, description, imageUrl);
         if (id) {
             quotationItem.id = parseInt(id);
             quotationItem.quotation_visit = parseInt(quotationVisitId!);
@@ -142,6 +176,13 @@ const CreateQuotationItemView = () => {
                         <Form.Label>Description</Form.Label>
                         <Form.Control as="textarea" rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
                     </Form.Group>
+                </Col>
+
+                <Col md={12} className="my-2">
+                    <div {...getRootProps({ className: 'dropzone' })}>
+                        <input {...getInputProps()} />
+                        {file ? <p>Selected file: {file.name}</p> : <p>Drop an awesome picture of the item here!</p>}
+                    </div>
                 </Col>
 
                 <Col md={4} />
