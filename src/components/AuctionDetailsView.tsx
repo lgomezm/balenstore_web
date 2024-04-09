@@ -87,7 +87,7 @@ const AuctionDetailsView = () => {
                 </Col>}
                 <Col md={2}>
                     <h3>Bid history</h3>
-                    {bids.map((bid) => <Card className="mt-2">
+                    {bids.map((bid) => <Card key={bid.id} className="mt-2">
                         <Card.Body>
                             <Card.Title>${bid.amount}</Card.Title>
                             <Card.Text>{toStringDate(bid.created_at!)}</Card.Text>
