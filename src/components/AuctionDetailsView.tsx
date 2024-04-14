@@ -27,6 +27,11 @@ const AuctionDetailsView = () => {
 
     const { id } = useParams();
 
+    const getAuction = () => AuctionService.getAuction(
+        id!,
+        (auction) => setAuction(auction),
+        (_) => setError({ unknown: ['Could not get auction. Please try again later.'] })
+    );
     const getBids = () => AuctionService.getBids(
         id!,
         (bids) => setBids(bids.reverse()),
@@ -40,17 +45,14 @@ const AuctionDetailsView = () => {
     };
 
     useEffect(() => {
-        AuctionService.getAuction(
-            id!,
-            (auction) => setAuction(auction),
-            (_) => setError({ unknown: ['Could not get auction. Please try again later.'] })
-        );
+        getAuction();
         getBids();
     }, []);
 
     const placeBid = () => AuctionService.placeBid(
         id!, parseInt(bidAmount.toString()),
         (_) => {
+            getAuction();
             getBids();
             setShowPlaceBidModal(false);
             setSuccessMessage('Bid placed successfully!');

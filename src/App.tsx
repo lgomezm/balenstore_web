@@ -32,6 +32,7 @@ function App() {
   console.log('cargado...')
   return <BrowserRouter>
     <Routes>
+      <Route path="/" element={<LoginView />} />
       <Route path="/login" element={<LoginView />} />
       <Route path="/quotation-visits" element={<PrivateRoute view={<ListQuotationVisitsView />} />} />
       <Route path="/quotation-visits/new" element={<PrivateRoute view={<CreateQuotationVisitView />} />} />
