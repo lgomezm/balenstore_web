@@ -78,7 +78,7 @@ const AuctionDetailsView = () => {
                 {auction && <Col md={6} className="text-start">
                     <h1 className="text-center">{auction.item_data!.name}</h1>
                     <p>{auction.item_data!.description}</p>
-                    <p><strong>Current Bid:</strong> {auction.current_bid ? `${auction.current_bid}` : '-'}</p>
+                    <p><strong>Current Bid:</strong> {auction.current_bid ? `$${auction.current_bid}` : '-'}</p>
                     <p><strong>Starting Bid:</strong> ${auction.starting_bid}</p>
                     <p><strong>Open since:</strong> {toStringDate(auction.created_at)}</p>
                     <p><strong>Closes:</strong> {toStringDate(auction.closes_at)}</p>

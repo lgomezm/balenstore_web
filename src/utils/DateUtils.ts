@@ -6,7 +6,7 @@ const toStringDate = (date: Date | string) => {
     const month = date.getMonth() + 1
     const year = date.getFullYear()
 
-    return `${day}/${month}/${year}`
+    return `${month}/${day}/${year}`
 };
 
 export default toStringDate;

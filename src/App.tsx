@@ -10,7 +10,7 @@ import ListQuotationVisitsView from './components/ListQuotationVisitsView'
 import ListQuotationItemsView from './components/ListQuotationItemsView'
 import ListAuctionsView from './components/ListAuctionsView'
 import AuctionDetailsView from './components/AuctionDetailsView'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { AuthService } from './services/AuthService'
 
 interface Props {
@@ -28,11 +28,28 @@ const PrivateRoute = ({ view }: Props) => {
   return view;
 };
 
+const HomeRoute = () => {
+  const [view, setView] = useState<React.ReactNode>(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    AuthService.getMe(
+      (me) => {
+        if (me.user_type === 'Admin') {
+          setView(<ListQuotationVisitsView />);
+        } else {
+          setView(<ListAuctionsView />);
+        }
+      },
+      (_) => navigate('/login')
+    )
+  }, []);
+  return view;
+};
+
 function App() {
-  console.log('cargado...')
   return <BrowserRouter>
     <Routes>
-      <Route path="/" element={<LoginView />} />
+      <Route path="/" element={<HomeRoute />} />
       <Route path="/login" element={<LoginView />} />
       <Route path="/quotation-visits" element={<PrivateRoute view={<ListQuotationVisitsView />} />} />
       <Route path="/quotation-visits/new" element={<PrivateRoute view={<CreateQuotationVisitView />} />} />
