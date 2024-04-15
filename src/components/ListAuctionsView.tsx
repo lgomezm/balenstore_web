@@ -34,7 +34,7 @@ const ListAuctionsView = () => {
                             <Card.Text>{auction.item_data!.description}</Card.Text>
                             <Card.Text><strong>Closes:</strong> {toStringDate(auction.closes_at)}</Card.Text>
                             <Card.Text><strong>Starting Bid:</strong> ${auction.starting_bid}</Card.Text>
-                            <Card.Text><strong>Current Bid:</strong> {auction.current_bid ? `${auction.current_bid}` : '-'}</Card.Text>
+                            <Card.Text><strong>Current Bid:</strong> {auction.current_bid ? `$${auction.current_bid}` : '-'}</Card.Text>
                             <Button variant="primary" onClick={() => navigate(`/auctions/${auction.id}`)}>View details</Button>
                         </Card.Body>
                     </Card>
