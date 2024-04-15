@@ -63,7 +63,7 @@ const ConvertToAuctionView = () => {
         }
     );
 
-    const handleCloseModal = () => navigate("/admin");
+    const handleCloseModal = () => navigate("/auctions");
 
     return <ViewContainer>
         <Container>
